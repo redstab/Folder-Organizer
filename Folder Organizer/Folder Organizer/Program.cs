@@ -34,15 +34,15 @@ namespace Folder_Organizer
 							}
 					}
 				}
-				else
+			}
+			else
+			{
+				ServiceBase[] ServicesToRun;
+				ServicesToRun = new ServiceBase[]
 				{
-					ServiceBase[] ServicesToRun;
-					ServicesToRun = new ServiceBase[]
-					{
-						new FolderOrganizerService()
-					};
-					ServiceBase.Run(ServicesToRun);
-				}
+					new FolderOrganizerService()
+				};
+				ServiceBase.Run(ServicesToRun);
 			}
 
 		}
