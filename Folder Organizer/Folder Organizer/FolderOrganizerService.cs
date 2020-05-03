@@ -89,7 +89,7 @@ namespace Folder_Organizer
 			Watcher.Path = ConfigurationManager.AppSettings["WatchPath"];
 			Watcher.EnableRaisingEvents = true;
 			Watcher.Created += new FileSystemEventHandler(HandleFile);
-			Watcher.Changed += new FileSystemEventHandler(HandleFile);
+			Watcher.Renamed += new RenamedEventHandler(HandleFile);
 
 			serviceStatus.dwCurrentState = ServiceState.SERVICE_RUNNING;
 			SetServiceStatus(this.ServiceHandle, ref serviceStatus);
@@ -97,8 +97,12 @@ namespace Folder_Organizer
 
 		private void HandleFile(object sender, FileSystemEventArgs e)
 		{
-			string path = e.FullPath;
-			
+			FileInfo FileToHandle = new FileInfo(e.FullPath);
+			string FileExtension = FileToHandle.Extension.Substring(1);
+			string DestinationFolder = ExtensionMapper[FileExtension];
+			string DestinationPath = Path.Combine(ConfigurationManager.AppSettings["WatchPath"], DestinationFolder, FileToHandle.Name);
+			//string FinalPath = Path.Combine(ConfigurationManager.AppSettings["WatchPath"], ExtensionMapper[])
+			Logger.WriteEntry($"Handling file: {DestinationPath}");
 		}
 
 		protected override void OnStop()
